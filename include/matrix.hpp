@@ -7,18 +7,37 @@
 #include <fstream>
 #include <sstream>
 #include <gtest/gtest.h>
+#include <type_traits>
 
 #include "myVector.hpp"
 
-using MType = double;
+using MType = short;
 
-template<typename T>
+template<typename Type>
 class SquareMatrix {
-
+    using T = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
 public:
 
     SquareMatrix (MyVector<MyVector<T>> &setData) {
         data = setData;
+    }
+
+    SquareMatrix (std::stringstream &inp) {
+
+        MyVector<MyVector<T>> d = getMatrixData(inp);
+        data = d;
+    }
+
+    SquareMatrix (std::ifstream &inp) {
+
+        MyVector<MyVector<T>> d = getMatrixData(inp);
+        data = d;
+    }
+
+    SquareMatrix () {
+
+        MyVector<MyVector<T>> d = getMatrixData();
+        data = d;
     }
 
     T getDet () {
@@ -87,7 +106,7 @@ private:
             // Bringing to the upper triangular view
             for (int k = i + 1; k < n; ++k) {
 
-                T factor = data[k][i] / data[i][i];
+                double factor = data[k][i] / data[i][i];
                 for (int j = i; j < n; ++j) {
 
                     data[k][j] -= factor * data[i][j];
@@ -97,10 +116,60 @@ private:
         return true;
     }  
 
+    MyVector<MyVector<T>> getMatrixData() {
+        T tmp = 0;
+        size_t sz = 0;
+        std::cin >> sz;
+
+        MyVector<MyVector<T>> data;
+
+        for (size_t i = 0; i < sz; i++) {
+            MyVector<T> vec;
+            for (size_t j = 0; j < sz; j++) {
+                std::cin >> tmp;
+                vec.push_back(tmp);
+            }
+            data.push_back(vec); 
+        }
+
+        return data;
+    }
+
+    MyVector<MyVector<T>> getMatrixData (std::ifstream &inp) {
+        T tmp = 0;
+        size_t sz = 0;
+        inp >> sz;
+
+        MyVector<MyVector<T>> data;
+
+        for (size_t i = 0; i < sz; i++) {
+            MyVector<T> vec;
+            for (size_t j = 0; j < sz; j++) {
+                inp >> tmp;
+                vec.push_back(tmp);
+            }
+            data.push_back(vec); 
+        }
+
+        return data;
+    }
+
+    MyVector<MyVector<T>> getMatrixData (std::stringstream &inp) {
+        T tmp = 0;
+        size_t sz = 0;
+        inp >> sz;
+
+        MyVector<MyVector<T>> data;
+
+        for (size_t i = 0; i < sz; i++) {
+            MyVector<T> vec;
+            for (size_t j = 0; j < sz; j++) {
+                inp >> tmp;
+                vec.push_back(tmp);
+            }
+            data.push_back(vec); 
+        }
+
+        return data;
+    }
 };
-
-MyVector<MyVector<MType>> getMatrixData ();
-
-MyVector<MyVector<MType>> getMatrixData (std::ifstream &inp);
-
-MyVector<MyVector<MType>> getMatrixData (std::stringstream &inp);

@@ -57,7 +57,7 @@ private:
 
         for (int i = 0; i < n; ++i) {
 
-            // Поиск максимального элемента в текущем столбце
+            // Searching for the maximum element in the current column
             double maxElement = std::abs(data[i][i]);
             int maxRow = i;
 
@@ -70,18 +70,18 @@ private:
                 }
             }
 
-            // Меняем текущую строку с максимальной
+            // Changing the current line from the maximum
             if (maxRow != i) {
 
                 std::swap(data[i], data[maxRow]);
                 sign *= -1;
             }
 
-            if (std::abs(data[i][i]) < 1e-9) { // Используем небольшой порог для численных ошибок
+            if (std::abs(data[i][i]) < 1e-9) {
                 return false;
             }
 
-            // Приведение к верхне-треугольному виду
+            // // // Bringing to the upper triangular view
             for (int k = i + 1; k < n; ++k) {
 
                 double factor = data[k][i] / data[i][i];

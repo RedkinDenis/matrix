@@ -13,7 +13,7 @@ MyVector<MyVector<double>> getMatrixData() {
             std::cin >> tmp;
             vec.push_back(tmp);
         }
-        data.push_back(vec); // Добавляем строку в матрицу
+        data.push_back(vec); 
     }
 
     return data;
@@ -32,7 +32,7 @@ MyVector<MyVector<double>> getMatrixData (std::ifstream &inp) {
             inp >> tmp;
             vec.push_back(tmp);
         }
-        data.push_back(vec); // Добавляем строку в матрицу
+        data.push_back(vec); 
     }
 
     return data;
@@ -51,7 +51,7 @@ MyVector<MyVector<double>> getMatrixData (std::stringstream &inp) {
             inp >> tmp;
             vec.push_back(tmp);
         }
-        data.push_back(vec); // Добавляем строку в матрицу
+        data.push_back(vec); 
     }
 
     return data;

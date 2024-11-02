@@ -11,7 +11,7 @@
 
 #include "myVector.hpp"
 
-using MType = short;
+using MType = double;
 
 template<typename Type>
 class SquareMatrix {

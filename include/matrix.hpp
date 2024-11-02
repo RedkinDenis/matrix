@@ -10,21 +10,24 @@
 
 #include "myVector.hpp"
 
+using MType = double;
+
+template<typename T>
 class SquareMatrix {
 
 public:
 
-    SquareMatrix (MyVector<MyVector<double>> &setData) {
+    SquareMatrix (MyVector<MyVector<T>> &setData) {
         data = setData;
     }
 
-    double getDet () {
+    T getDet () {
 
         int sign = 1;
         if (!this->ToTriangular(sign))
             return 0;
 
-        double det = data[0][0];
+        T det = data[0][0];
 
         size_t sz = data.get_size();
         for (int i = 1; i < sz; i++) {
@@ -49,7 +52,7 @@ public:
 
 private:
 
-    MyVector<MyVector<double>> data;
+    MyVector<MyVector<T>> data;
     
     bool ToTriangular(int &sign) {
 
@@ -58,7 +61,7 @@ private:
         for (int i = 0; i < n; ++i) {
 
             // Searching for the maximum element in the current column
-            double maxElement = std::abs(data[i][i]);
+            T maxElement = std::abs(data[i][i]);
             int maxRow = i;
 
             for (int k = i + 1; k < n; ++k) {
@@ -81,10 +84,10 @@ private:
                 return false;
             }
 
-            // // // Bringing to the upper triangular view
+            // Bringing to the upper triangular view
             for (int k = i + 1; k < n; ++k) {
 
-                double factor = data[k][i] / data[i][i];
+                T factor = data[k][i] / data[i][i];
                 for (int j = i; j < n; ++j) {
 
                     data[k][j] -= factor * data[i][j];
@@ -96,8 +99,8 @@ private:
 
 };
 
-MyVector<MyVector<double>> getMatrixData ();
+MyVector<MyVector<MType>> getMatrixData ();
 
-MyVector<MyVector<double>> getMatrixData (std::ifstream &inp);
+MyVector<MyVector<MType>> getMatrixData (std::ifstream &inp);
 
-MyVector<MyVector<double>> getMatrixData (std::stringstream &inp);
+MyVector<MyVector<MType>> getMatrixData (std::stringstream &inp);

@@ -43,17 +43,10 @@ public:
     T getDet () {
 
         int sign = 1;
-        if (!this->ToTriangular(sign))
+        if (!ToTriangular(sign))
             return 0;
 
-        T det = data[0][0];
-
-        size_t sz = data.get_size();
-        for (int i = 1; i < sz; i++) {
-
-            det *= data[i][i];
-        }
-        return det * sign;
+        return sign * countDet();
     }
     
     void dump() const {
@@ -72,25 +65,13 @@ public:
 private:
 
     MyVector<MyVector<T>> data;
+    size_t mSize = 0;
     
     bool ToTriangular(int &sign) {
 
-        int n = data.get_size();
+        for (int i = 0; i < mSize; ++i) {
 
-        for (int i = 0; i < n; ++i) {
-
-            // Searching for the maximum element in the current column
-            T maxElement = std::abs(data[i][i]);
-            int maxRow = i;
-
-            for (int k = i + 1; k < n; ++k) {
-
-                if (std::abs(data[k][i]) > maxElement) {
-
-                    maxElement = std::abs(data[k][i]);
-                    maxRow = k;
-                }
-            }
+            int maxRow = getMaxLine(i);
 
             // Changing the current line from the maximum
             if (maxRow != i) {
@@ -103,24 +84,45 @@ private:
                 return false;
             }
 
-            // Bringing to the upper triangular view
-            for (int k = i + 1; k < n; ++k) {
-
-                double factor = data[k][i] / data[i][i];
-                for (int j = i; j < n; ++j) {
-
-                    data[k][j] -= factor * data[i][j];
-                }
-            }
+            subtractLine(i);
         }
         return true;
     }  
+
+    int getMaxLine (int i) {
+
+        T maxElement = std::abs(data[i][i]);
+        int maxRow = i;
+
+        for (int k = i + 1; k < mSize; ++k) {
+
+            if (std::abs(data[k][i]) > maxElement) {
+
+                maxElement = std::abs(data[k][i]);
+                maxRow = k;
+            }
+        }
+        return maxRow;
+    } 
+
+    void subtractLine (int i) {
+
+        for (int k = i + 1; k < mSize; ++k) {
+
+            double factor = data[k][i] / data[i][i];
+            for (int j = i; j < mSize; ++j) {
+
+                data[k][j] -= factor * data[i][j];
+            }
+        }
+    }
 
     template <typename StreamType>
     MyVector<MyVector<T>> getMatrixData(StreamType& inp) {
         T tmp = 0;
         size_t sz = 0;
         inp >> sz;
+        mSize = sz;
 
         MyVector<MyVector<T>> data;
 
@@ -138,5 +140,16 @@ private:
 
     MyVector<MyVector<T>> getMatrixData() {
         return getMatrixData(std::cin);
+    }
+
+    T countDet () {
+
+        T det = data[0][0];
+
+        for (int i = 1; i < mSize; i++) {
+
+            det *= data[i][i];
+        }
+        return det;
     }
 };

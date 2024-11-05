@@ -80,7 +80,7 @@ private:
                 sign *= -1;
             }
 
-            if (std::abs(data[i][i]) < 1e-9) {
+            if (std::fabs(data[i][i]) < 1e-9) {
                 return false;
             }
 
@@ -91,14 +91,14 @@ private:
 
     int getMaxLine (int i) {
 
-        T maxElement = std::abs(data[i][i]);
+        T maxElement = std::fabs(data[i][i]);
         int maxRow = i;
 
         for (int k = i + 1; k < mSize; ++k) {
 
-            if (std::abs(data[k][i]) > maxElement) {
+            if (std::fabs(data[k][i]) > maxElement) {
 
-                maxElement = std::abs(data[k][i]);
+                maxElement = std::fabs(data[k][i]);
                 maxRow = k;
             }
         }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <gtest/gtest.h>
+#include <stdexcept> 
 
 template<typename T>
 class MyVector {
@@ -12,17 +13,15 @@ private:
 public:
     MyVector() : data(nullptr), capacity(0), size(0) {}
 
-    // Copy Constructor
     MyVector(const MyVector& other) : data(nullptr), capacity(other.capacity), size(other.size) {
         if (capacity > 0) {
             data = new T[capacity];
-            for (size_t i = 0; i < size; ++i) {
+            for (size_t i = 0; i < size; ++i) { 
                 data[i] = other.data[i]; 
             }
         }
     }
     
-    // Moving operator
     MyVector(MyVector&& other) noexcept 
         : data(other.data), capacity(other.capacity), size(other.size) {
         other.data = nullptr;
@@ -30,7 +29,6 @@ public:
         other.size = 0;
     }
 
-    // Assignment operator
     MyVector& operator=(const MyVector& other) {
         if (this != &other) { 
             delete[] data; 
@@ -41,8 +39,9 @@ public:
                 for (size_t i = 0; i < size; ++i) {
                     data[i] = other.data[i]; 
                 }
-            } else {
-                data = nullptr;
+            } 
+            else {
+                data = nullptr; 
             }
         }
         return *this;
@@ -55,12 +54,13 @@ public:
     void resize(size_t new_capacity) {
         if (new_capacity == capacity) return; 
         T* new_data = new T[new_capacity];
-        for (size_t i = 0; i < size; ++i) {
+        for (size_t i = 0; i < size && i < new_capacity; ++i) { 
             new_data[i] = data[i]; 
         }
         delete[] data; 
         data = new_data; 
         capacity = new_capacity; 
+        size = (size < new_capacity) ? size : new_capacity;
     }
 
     void push_back(const T& value) {

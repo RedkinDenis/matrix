@@ -7,25 +7,21 @@ set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
 find_package(GTest REQUIRED)
 
-SET(SRCS
-src/matrix.cpp
-)
+add_library(mtr INTERFACE)
 
-add_library(mtr STATIC ${SRCS})
-
-target_include_directories(mtr PUBLIC ${INCLUDE_DIR})
+target_include_directories(mtr INTERFACE ${INCLUDE_DIR})
 
 
-add_library(TEST STATIC ${SRCS})
+add_library(TEST INTERFACE)
 
-target_include_directories(TEST PUBLIC ${GTEST_INCLUDE_DIRS})
-target_include_directories(TEST PUBLIC ${INCLUDE_DIR})
+target_include_directories(TEST INTERFACE ${GTEST_INCLUDE_DIRS})
+target_include_directories(TEST INTERFACE ${INCLUDE_DIR})
 
 
-add_library(UNIT_TEST STATIC ${SRCS})
+add_library(UNIT_TEST INTERFACE)
 
-target_include_directories(UNIT_TEST PUBLIC ${GTEST_INCLUDE_DIRS})
-target_include_directories(UNIT_TEST PUBLIC ${INCLUDE_DIR})
+target_include_directories(UNIT_TEST INTERFACE ${GTEST_INCLUDE_DIRS})
+target_include_directories(UNIT_TEST INTERFACE ${INCLUDE_DIR})
 
 
 add_executable(matrix.x main.cpp)                                                         

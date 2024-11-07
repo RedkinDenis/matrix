@@ -3,8 +3,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(matrix)
 
-set(CMAKE_CXX_STANDARD 17)
-
 set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 
 find_package(GTest REQUIRED)
@@ -36,11 +34,11 @@ target_link_libraries(matrix.x mtr)
 
 add_executable(matrix.test main.cpp)                                                         
 target_link_libraries(matrix.test TEST)
-target_link_libraries(matrix.test ${GTEST_LIBRARIES} pthread)
+target_link_libraries(matrix.test ${GTEST_LIBRARIES})
 target_compile_definitions(matrix.test PRIVATE FULL_TESTING)
 
 
 add_executable(matrix.unit main.cpp)                                                         
 target_link_libraries(matrix.unit UNIT_TEST)
-target_link_libraries(matrix.unit ${GTEST_LIBRARIES} pthread)
+target_link_libraries(matrix.unit ${GTEST_LIBRARIES})
 target_compile_definitions(matrix.unit PRIVATE UNIT_TESTING)

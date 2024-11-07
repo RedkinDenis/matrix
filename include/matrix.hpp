@@ -13,6 +13,35 @@
 
 using MType = double;
 
+template <typename Type>
+using fT = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
+
+template <typename TType>
+MyVector<MyVector<fT<TType>>> getMatrixData(std::istream &inp = std::cin) {
+    fT<TType> tmp = 0;
+    int sz = 0;
+    inp >> sz;
+
+    MyVector<MyVector<fT<TType>>> data;
+
+    if (sz <= 0) {
+        throw std::runtime_error("matrix size must be >= 1");
+        return data;
+    }
+
+    for (size_t i = 0; i < sz; i++) {
+        MyVector<fT<TType>> vec;
+        for (size_t j = 0; j < sz; j++) {
+            inp >> tmp;
+            vec.push_back(tmp);
+        }
+        data.push_back(vec);
+    }
+
+    return data;
+}
+
+
 template<typename Type>
 class SquareMatrix {
     using T = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
@@ -20,24 +49,7 @@ public:
 
     SquareMatrix (MyVector<MyVector<T>> &setData) {
         data = setData;
-    }
-
-    SquareMatrix (std::stringstream &inp) {
-
-        MyVector<MyVector<T>> d = getMatrixData(inp);
-        data = d;
-    }
-
-    SquareMatrix (std::ifstream &inp) {
-
-        MyVector<MyVector<T>> d = getMatrixData(inp);
-        data = d;
-    }
-
-    SquareMatrix () {
-
-        MyVector<MyVector<T>> d = getMatrixData();
-        data = d;
+        mSize = data.get_size();
     }
 
     T getDet () {
@@ -115,31 +127,6 @@ private:
                 data[k][j] -= factor * data[i][j];
             }
         }
-    }
-
-    template <typename StreamType>
-    MyVector<MyVector<T>> getMatrixData(StreamType& inp) {
-        T tmp = 0;
-        size_t sz = 0;
-        inp >> sz;
-        mSize = sz;
-
-        MyVector<MyVector<T>> data;
-
-        for (size_t i = 0; i < sz; i++) {
-            MyVector<T> vec;
-            for (size_t j = 0; j < sz; j++) {
-                inp >> tmp;
-                vec.push_back(tmp);
-            }
-            data.push_back(vec);
-        }
-
-        return data;
-    }
-
-    MyVector<MyVector<T>> getMatrixData() {
-        return getMatrixData(std::cin);
     }
 
     T countDet () {

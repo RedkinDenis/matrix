@@ -100,7 +100,7 @@ private:
         return true;
     }  
 
-    int getMaxLine (int i) {
+    int getMaxLine (int i) const {
 
         T maxElement = std::fabs(data[i][i]);
         int maxRow = i;
@@ -128,7 +128,7 @@ private:
         }
     }
 
-    T countDet () {
+    T countDet () const {
 
         T det = data[0][0];
 

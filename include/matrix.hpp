@@ -26,7 +26,6 @@ MyVector<MyVector<fT<TType>>> getMatrixData(std::istream &inp = std::cin) {
 
     if (sz <= 0) {
         throw std::runtime_error("matrix size must be >= 1");
-        return data;
     }
 
     for (size_t i = 0; i < sz; i++) {

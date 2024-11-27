@@ -19,7 +19,7 @@ int main() {
 #else
 
     try {
-        MyVector<MyVector<fT<MType>>> data = getMatrixData<MType>();
+        MyVector<MyVector<MType>> data = getMatrixData<MType>();
         SquareMatrix<MType> matrix(data);
 
 #ifdef DEBUG
@@ -67,11 +67,16 @@ TEST(count_det, number) {                                                   \
 
 GTEST(test1, int, "3 5 6 2 20 27 11 80 105 42  15")
 GTEST(test2, float, "4 2 2 15 15 10 12 80 95 12 14 100 135 62 72 515 695  100")
-GTEST(test3, short, "5 2 0 9 4 0 0 2 15 4 15 8 2 54 21 18 32 14 258 96 114 132 58 1065 396 474  36")
+GTEST(test3, int, "5 2 0 9 4 0 0 2 15 4 15 8 2 54 21 18 32 14 258 96 114 132 58 1065 396 474  36")
 GTEST(test4, double, "6 2 10 0 2 4 4 10 55 0 14 32 28 50 270 4 74 160 148 230 1245 16 340 740 676 472 2555 32 694 1516 1392 2106 11400 144 3104 6768 6200  1280")
 GTEST(test5, double, "7 3 1 3 10 20 16 5 0 1 0 2 25 16 10 0 1 1 6 35 36 35 0 9 4 36 290 236 195 0 23 8 82 710 572 455 3 126 48 462 3895 3152 2520 15 205 88 776 6295 5108 4070  600")
 
-TEST(exception, zeroSize) {                                                   
+
+#endif
+
+#ifdef UNIT_TESTING   
+
+TEST(exception, zeroSize) {                                                     
     std::stringstream fTest("0"); 
     try {                                        
         auto data = getMatrixData<double>(fTest);                                 
@@ -79,10 +84,6 @@ TEST(exception, zeroSize) {
         EXPECT_STREQ("matrix size must be >= 1", err.what());
     }                                                                            
 }
-
-#endif
-
-#ifdef UNIT_TESTING   
 
 TEST(MyVector, MyVectorFuncTest1) {
 

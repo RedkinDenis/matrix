@@ -13,23 +13,23 @@
 
 using MType = double;
 
-template <typename Type>
-using fT = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
+// template <typename Type>
+// using fT = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
 
 template <typename TType>
-MyVector<MyVector<fT<TType>>> getMatrixData(std::istream &inp = std::cin) {
-    fT<TType> tmp = 0;
+MyVector<MyVector<TType>> getMatrixData(std::istream &inp = std::cin) {
+    TType tmp = 0;
     int sz = 0;
     inp >> sz;
 
-    MyVector<MyVector<fT<TType>>> data;
+    MyVector<MyVector<TType>> data;
 
     if (sz <= 0) {
         throw std::runtime_error("matrix size must be >= 1");
     }
 
     for (size_t i = 0; i < sz; i++) {
-        MyVector<fT<TType>> vec;
+        MyVector<TType> vec;
         for (size_t j = 0; j < sz; j++) {
             inp >> tmp;
             vec.push_back(tmp);
@@ -41,9 +41,9 @@ MyVector<MyVector<fT<TType>>> getMatrixData(std::istream &inp = std::cin) {
 }
 
 
-template<typename Type>
+template<typename T>
 class SquareMatrix {
-    using T = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
+    // using T = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
 public:
 
     SquareMatrix (MyVector<MyVector<T>> &setData) {
@@ -51,13 +51,35 @@ public:
         mSize = data.get_size();
     }
 
-    T getDet () {
+    template <typename U>
+    SquareMatrix (const SquareMatrix<U> &matrix) {
 
-        int sign = 1;
-        if (!ToTriangular(sign))
-            return 0;
+        MyVector<MyVector<double>> newData;
+        for (int i = 0; i < matrix.data.get_size(); i++) {
+            MyVector<double> vec;
 
-        return sign * countDet();
+            for (int j = 0; j < matrix.data[i].get_size(); j++)
+                vec.push_back((double)matrix.data[i][j]);
+
+            // std::transform(matrix.data[i].begin(), matrix.data[i].end(), std::back_inserter(vec), [](T x) { return (double)x; });
+            newData.push_back(vec);
+        }
+
+        data = newData;
+        mSize = data.get_size();
+    }
+
+    double getDet () {
+
+        if (!std::is_integral<T>::value) {
+            int sign = 1;
+            if (!ToTriangular(sign))
+                return 0;
+
+            return sign * countDet();
+        }
+        SquareMatrix<double> dMatr(*this);
+        return dMatr.getDet();
     }
     
     void dump() const {
@@ -73,9 +95,9 @@ public:
         }
     }      
 
-private:
 
     MyVector<MyVector<T>> data;
+private:
     size_t mSize = 0;
     
     bool ToTriangular(int &sign) {

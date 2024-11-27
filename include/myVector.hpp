@@ -48,6 +48,21 @@ public:
         return *this;
     }
 
+    MyVector& operator=(MyVector&& other) noexcept {
+        if (this != &other) {
+            delete[] data; 
+
+            data = other.data;
+            capacity = other.capacity;
+            size = other.size;
+
+            other.data = nullptr;
+            other.capacity = 0;
+            other.size = 0;
+        }
+        return *this;
+    }
+
     ~MyVector() {
         delete[] data;
     }

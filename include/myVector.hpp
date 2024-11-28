@@ -14,12 +14,15 @@ private:
 public:
     MyVector() : data(nullptr), capacity(0), size(0) {}
 
-    MyVector(const MyVector& other) : data(nullptr), capacity(other.capacity), size(other.size) {
-        if (capacity > 0) {
-            data = new T[capacity];
-            for (size_t i = 0; i < size; ++i) { 
-                data[i] = other.data[i]; 
+    MyVector(const MyVector& other) : data(nullptr), capacity(0), size(0) {
+        if (other.capacity > 0) {
+            T* new_data = new T[other.capacity];
+            for (size_t i = 0; i < other.size; ++i) {
+                new_data[i] = other.data[i];
             }
+            data = new_data;
+            capacity = other.capacity;
+            size = other.size;
         }
     }
     
@@ -31,19 +34,20 @@ public:
     }
 
     MyVector& operator=(const MyVector& other) {
-        if (this != &other) { 
-            delete[] data; 
+        if (this != &other) {
+            T* new_data = new T[other.capacity];
+            if (other.capacity > 0) {
+                for (size_t i = 0; i < other.size; ++i) {
+                    new_data[i] = other.data[i];
+                }
+            }
+            else {
+                new_data = nullptr;
+            }
+            delete data;
             capacity = other.capacity;
             size = other.size;
-            if (capacity > 0) {
-                data = new T[capacity];
-                for (size_t i = 0; i < size; ++i) {
-                    data[i] = other.data[i]; 
-                }
-            } 
-            else {
-                data = nullptr; 
-            }
+            data = new_data;
         }
         return *this;
     }

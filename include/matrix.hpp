@@ -13,9 +13,6 @@
 
 using MType = double;
 
-// template <typename Type>
-// using fT = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
-
 template <typename TType>
 MyVector<MyVector<TType>> getMatrixData(std::istream &inp = std::cin) {
     TType tmp = 0;
@@ -40,10 +37,8 @@ MyVector<MyVector<TType>> getMatrixData(std::istream &inp = std::cin) {
     return data;
 }
 
-
 template<typename T>
 class SquareMatrix {
-    // using T = typename std::conditional<std::is_integral<Type>::value, double, Type>::type;
 public:
 
     SquareMatrix (MyVector<MyVector<T>> &setData) {
@@ -61,7 +56,6 @@ public:
             for (int j = 0; j < matrix.data[i].get_size(); j++)
                 vec.push_back((double)matrix.data[i][j]);
 
-            // std::transform(matrix.data[i].begin(), matrix.data[i].end(), std::back_inserter(vec), [](T x) { return (double)x; });
             newData.push_back(vec);
         }
 
@@ -94,7 +88,6 @@ public:
             std::cout << std::endl;
         }
     }      
-
 
     MyVector<MyVector<T>> data;
 private:

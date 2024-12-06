@@ -17,8 +17,13 @@ public:
     MyVector(const MyVector& other) : data(nullptr), capacity(0), size(0) {
         if (other.capacity > 0) {
             T* new_data = new T[other.capacity];
-            for (size_t i = 0; i < other.size; ++i) {
-                new_data[i] = other.data[i];
+            try {
+                for (size_t i = 0; i < other.size; ++i) {
+                    new_data[i] = other.data[i];
+                }
+            } catch(std::runtime_error &Err) {
+                delete new_data;
+                throw Err;
             }
             data = new_data;
             capacity = other.capacity;

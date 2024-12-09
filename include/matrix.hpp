@@ -11,6 +11,8 @@
 
 #include "myVector.hpp"
 
+static const double epsilon = 1e-9;
+
 using MType = double;
 
 template <typename TType>
@@ -49,12 +51,12 @@ public:
     template <typename U>
     SquareMatrix (const SquareMatrix<U> &matrix) {
 
-        MyVector<MyVector<double>> newData;
+        MyVector<MyVector<T>> newData;
         for (int i = 0; i < matrix.data.get_size(); i++) {
-            MyVector<double> vec;
+            MyVector<T> vec;
 
             for (int j = 0; j < matrix.data[i].get_size(); j++)
-                vec.push_back((double)matrix.data[i][j]);
+                vec.push_back(static_cast<T>(matrix.data[i][j]));
 
             newData.push_back(vec);
         }
@@ -106,7 +108,7 @@ private:
                 sign *= -1;
             }
 
-            if (std::fabs(data[i][i]) < 1e-9) {
+            if (std::fabs(data[i][i]) < epsilon) {
                 return false;
             }
 

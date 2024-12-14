@@ -21,9 +21,9 @@ public:
                 for (size_t i = 0; i < other.size; ++i) {
                     new_data[i] = other.data[i];
                 }
-            } catch(std::runtime_error &Err) {
+            } catch(...) {
                 delete new_data;
-                throw Err;
+                throw;
             }
             data = new_data;
             capacity = other.capacity;
